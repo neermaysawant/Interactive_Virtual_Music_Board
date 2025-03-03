@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Virtual Music Board</title>
+    <style>
+        body {
+            margin: 0;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+        .video-background {
+            position: fixed;
+            top: -16%;
+            left: -25%;
+            width: 150%;
+            height: 150%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .menu {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            position: relative;
+            transition: 0.3s ease;
+        }
+        .menu a#home::after, .menu a#home:hover::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: green;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+        .menu a#trap:hover::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: red;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+        .menu a#house:hover::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: blue;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+        .menu a#vintage:hover::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: yellow;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+        .title {
+            margin-top: 40vh;
+            font-size: 2em;
+        }
+        .description {
+            max-width: 600px;
+            margin: 20px auto;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <video class="video-background" autoplay loop muted>
+        <source src="circle.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="menu">
+        <a href="index.html" id="home">Home</a>
+        <a href="trap.html" id="trap">Trap</a>
+        <a href="house.html" id="house">House</a>
+        <a href="vintage.html" id="vintage">Vintage</a>
+    </div>
+    <div id="home">
+        <div class="title">Interactive Virtual Music Board</div>
+        <div class="description">This is an open source project. The Interactive Virtual Music Board is designed to provide an engaging platform for users to experiment with music creation. Users can interact with different instrument buttons, play them in a loop. This tool is ideal for educational purposes, entertainment, and fostering creativity, allowing users to simulate a digital jam session.</div>
+    </div>
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyAe2GwsoWOh8YprSzxcuQbKsSIAqd8i7U0",
+      authDomain: "interactive-music-board.firebaseapp.com",
+      projectId: "interactive-music-board",
+      storageBucket: "interactive-music-board.firebasestorage.app",
+      messagingSenderId: "323603388829",
+      appId: "1:323603388829:web:d50dd94eb7be87582cb774",
+      measurementId: "G-41RT42TP08"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+</script>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Virtual Music Board</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .menu {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            position: relative;
+            transition: 0.3s ease;
+        }
+        .menu a#home:hover::after{
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: green;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+        .menu a#trap:hover::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: red;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+        .menu a#house::after, .menu a#house:hover::after{
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: blue;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+        .menu a#vintage:hover::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: yellow;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15%;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .instrument-button {
+            padding: 20px 40px;
+            margin: 10px;
+            border: 2px solid;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .instrument-button.active {
+            background: var(--btn-color);
+            color: black;
+            border-color: var(--btn-color);
+        }
+        .bass { --btn-color: yellow; border-color: yellow; color: yellow; }
+        .drums { --btn-color: green; border-color: green; color: green; }
+        .piano { --btn-color: blue; border-color: blue; color: blue; }
+        .guitar { --btn-color: maroon; border-color: maroon; color: maroon; }
+        .mallet { --btn-color: orange; border-color: orange; color: orange; }
+        .flute { --btn-color: cyan; border-color: cyan; color: cyan; }
+        .vocals { --btn-color: white; border-color: white; color: white; }
+        .fx { --btn-color: purple; border-color: purple; color: purple; }
+        .percussion { --btn-color: pink; border-color: pink; color: pink; }
+        .snare { --btn-color: brown; border-color: brown; color: brown; }
+        .synth { --btn-color: lime; border-color: lime; color: lime; }
+        .bell { --btn-color: gold; border-color: gold; color: gold; }
+        .strings { --btn-color: violet; border-color: violet; color: violet; }
+        .trumpet { --btn-color: darkorange; border-color: darkorange; color: darkorange; }
+        .rhodes { --btn-color: teal; border-color: teal; color: teal; }
+        .vibraphone { --btn-color: lightblue; border-color: lightblue; color: lightblue; }
+        .progress-bar {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            width: 150px;
+            height: 8px;
+            border-radius: 10px;
+            background: black;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, red, yellow);
+            width: 0;
+            border-radius: 10px;
+        }
+        .toggle-btn {
+            position: fixed;
+            top: 80px;
+            left: 100px;
+            padding: 10px 20px;
+            background: black;
+            color: white;
+            border: 2px solid;
+            border-color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 40%;
+            }
+            .row {
+                display: flex;
+                justify-content: center;
+                margin: 5px 0;
+            }
+            .instrument-button {
+                padding: 10px 20px;
+                margin: 5px;
+                border: 2px solid;
+                background: transparent;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: 0.3s;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <a href="index.html" id="home">Home</a>
+        <a href="trap.html" id="trap">Trap</a>
+        <a href="house.html" id="house">House</a>
+        <a href="vintage.html" id="vintage">Vintage</a>
+    </div>
+    <button class="toggle-btn" id="togglePlay">Pause</button>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <button class="instrument-button bass" data-group="bass" data-audio="./House 126/House 1/House 1_BASS.wav">Bass</button>
+            <button class="instrument-button bass" data-group="bass" data-audio="./House 126/House 2/House 2_BASS.wav">Bass</button>
+            <button class="instrument-button drums" data-group="drums" data-audio="./House 126/House 1/House 1_DRUM.wav">Drum</button>
+            <button class="instrument-button drums" data-group="drums" data-audio="./House 126/House 2/House 2_DRUMS.wav">Drum</button>
+        </div>
+        <div class="row">
+            <button class="instrument-button fx" data-audio="./House 126/House 1/House 1_FX.wav">FX</button>
+            <button class="instrument-button fx" data-audio="./House 126/House 2/House 2_FX.wav">FX</button>
+            <button class="instrument-button percussion" data-audio="./House 126/House 1/House 1_PERCUSSION.wav">Percussion</button>
+            <button class="instrument-button snare" data-audio="./House 126/House 1/House 1_SNARE FILL.wav">Snare</button>
+        </div>
+        <div class="row">
+            <button class="instrument-button synth" data-audio="./House 126/House 2/House 2_SYNTH 2.wav">Synth</button>
+            <button class="instrument-button synth" data-audio="./House 126/House 2/House 2_SYNTH.wav">Synth</button>
+            <button class="instrument-button vocals" data-audio="./House 126/House 1/House 1_VOCAL.wav">Vocals</button>
+            <button class="instrument-button vocals" data-audio="./House 126/House 2/House 2_VOCAL.wav">Vocals</button>    
+        </div>
+    </div>
+    <script>
+        let selectedButtons = [];
+        let deselectedButtons = [];
+        let isPaused = false;
+        let progressPaused = false;
+        let startTime = Date.now();
+        let duration = 1905;
+        let elapsedTime = 0;
+        let animationFrame;
+        
+    
+        document.querySelectorAll('.instrument-button').forEach(button => {
+            const audio = new Audio(button.dataset.audio);
+            audio.loop = true;
+            button.audio = audio;
+    
+            button.addEventListener('click', () => {
+                const isDrumOrBass = button.classList.contains('drums') || button.classList.contains('bass');
+    
+                if (button.classList.contains('active')) {
+                    // Mark button to stop when the progress resets
+                    button.classList.remove('active');
+                    deselectedButtons.push(button);
+                } else {
+                    // If it's a drum or bass, stop others in the same group
+                    if (isDrumOrBass) {
+                        document.querySelectorAll(`.instrument-button.${button.classList[1]}`).forEach(otherButton => {
+                            if (otherButton !== button && otherButton.classList.contains('active')) {
+                                otherButton.classList.remove('active');
+                                otherButton.audio.pause();
+                                otherButton.audio.currentTime = 0;
+                            }
+                        });
+                    }
+                    // Mark button for playing on next reset
+                    selectedButtons.push(button);
+                    button.classList.add('active');
+                }
+            });
+        });
+    
+        function updateProgress() {
+            let progressBar = document.getElementById('progress');
+            function step() {
+                if (!progressPaused) {
+                    elapsedTime = Date.now() - startTime;
+                    let progress = (elapsedTime / duration) * 100;
+
+                    if (progress >= 100) {
+                        startTime = Date.now();
+                        elapsedTime = 0;
+                        progress = 0;
+
+                        selectedButtons.forEach(button => {
+                            if (button.audio.paused) {
+                                button.audio.play();
+                            }
+                        });
+
+                        deselectedButtons.forEach(button => {
+                            button.audio.pause();
+                            button.audio.currentTime = 0;
+                        });
+
+                        selectedButtons = [];
+                        deselectedButtons = [];
+                    }
+                    progressBar.style.width = progress + '%';
+                }
+                animationFrame = requestAnimationFrame(step);
+            }
+            animationFrame = requestAnimationFrame(step);
+        }
+        updateProgress();
+
+        document.getElementById('togglePlay').addEventListener('click', () => {
+            isPaused = !isPaused;
+            progressPaused = isPaused;
+            document.getElementById('togglePlay').textContent = isPaused ? 'Play' : 'Pause';
+
+            if (isPaused) {
+                cancelAnimationFrame(animationFrame);
+                document.querySelectorAll('.instrument-button').forEach(button => {
+                    button.audio.pause();
+                });
+            } else {
+                startTime = Date.now() - elapsedTime;
+                updateProgress();
+                document.querySelectorAll('.instrument-button').forEach(button => {
+                    if (button.classList.contains('active')) {
+                        button.audio.play();
+                    }
+                });
+            }
+        });
+    </script> 
+</body>
+</html>
